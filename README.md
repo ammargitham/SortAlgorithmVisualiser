@@ -1,2 +1,0 @@
-# SortAlgorithmVisualiser
-Created with CodeSandbox

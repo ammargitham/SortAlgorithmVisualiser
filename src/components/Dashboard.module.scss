@@ -1,0 +1,32 @@
+.Dashboard {
+  flex:1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.buttonsWrapper {
+  padding: 0.5em;
+}
+
+.grid {
+  flex: 1;
+  padding: 0 0.5em 0.5em;
+  overflow-y: auto;
+  overflow-x: hidden;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-column-gap: 0.5em;
+  grid-row-gap: 0.5em;
+}
+
+.barCountInputWrapper {
+  display: inline-block;
+  margin-left: 1em;
+
+  & > input {
+    width: 4rem;
+  }
+}

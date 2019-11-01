@@ -1,0 +1,28 @@
+.SortView {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 1em;
+  border: 1px solid grey;
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+}
+
+.listItem {
+  margin: 0;
+  padding: 0;
+  display: block;
+  flex: 1;
+  height: 100%;
+
+   &:not(:last-child) {
+     margin-right: 5px;
+   }
+}
