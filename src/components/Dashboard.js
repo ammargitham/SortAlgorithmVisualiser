@@ -1,10 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
 import SortView from "./SortView";
-import {
-  bubbleSortIterator,
-  insertionSortIterator,
-  selectionSortIterator
-} from "../services/sorters";
 import random from "lodash/random";
 import times from "lodash/times";
 import {
@@ -14,6 +9,9 @@ import {
   buttonsWrapper,
   barCountInputWrapper
 } from "./Dashboard.module.scss";
+import { bubbleSortIterator } from "../services/sorters/bubbleSort";
+import { insertionSortIterator } from "../services/sorters/insertionSort";
+import { selectionSortIterator } from "../services/sorters/selectionSort";
 
 export default function Dashboard() {
   const viewHeight = 200;
