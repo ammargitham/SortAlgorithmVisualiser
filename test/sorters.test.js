@@ -1,8 +1,6 @@
-import {
-  bubbleSort,
-  insertionSort,
-  selectionSort
-} from "../src/services/sorters";
+import { bubbleSort } from "../src/services/sorters/bubbleSort";
+import { insertionSort } from "../src/services/sorters/insertionSort";
+import { selectionSort } from "../src/services/sorters/selectionSort";
 
 test("test bubble sort", () => {
   const array = [104, 1, 9, 7, 2];
