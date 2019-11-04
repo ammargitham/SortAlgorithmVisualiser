@@ -20,7 +20,8 @@ export default function Dashboard() {
 
   const [maxNumbers, setMaxNumbers] = useState(20);
   const [initialData, setInitialData] = useState([]);
-  const [isRunning, setIsRunning] = useState(false);
+  const [totalSorters, setTotalSorters] = useState(0);
+  const [totalDone, setTotalDone] = useState(0);
   const [bubbleSortData, setBubbleSortData] = useState({ array: [] });
   const [insertionSortData, setInsertionSortData] = useState({ array: [] });
   const [selectionSortData, setSelectionSortData] = useState({ array: [] });
@@ -37,7 +38,6 @@ export default function Dashboard() {
   const generate = useCallback(() => {
     const array = generateRandom(maxNumbers);
     console.log("orig array:", array.map(d => d.value));
-
     setInitialData(array);
     setData(array);
   }, [maxNumbers]);
@@ -66,13 +66,13 @@ export default function Dashboard() {
 
   function doBubbleSort() {
     const iterator = bubbleSortIterator(bubbleSortData.array);
-    callNext(iterator, setBubbleSortData);
+    callNext(iterator, setBubbleSortData, true);
   }
 
   function doInsertionSort() {
     try {
       const iterator = insertionSortIterator(insertionSortData.array);
-      callNext(iterator, setInsertionSortData);
+      callNext(iterator, setInsertionSortData, true);
     } catch (err) {
       console.log(err);
     }
@@ -81,7 +81,7 @@ export default function Dashboard() {
   function doSelectionSort() {
     try {
       const iterator = selectionSortIterator(selectionSortData.array);
-      callNext(iterator, setSelectionSortData);
+      callNext(iterator, setSelectionSortData, true);
     } catch (err) {
       console.log(err);
     }
@@ -90,14 +90,17 @@ export default function Dashboard() {
   function doQuickSort() {
     try {
       const iterator = quickSortIterator(quickSortData.array);
-      callNext(iterator, setQuickSortData);
+      callNext(iterator, setQuickSortData, true);
     } catch (err) {
       console.log(err);
     }
   }
 
-  function callNext(iterator, setter) {
+  function callNext(iterator, setter, isFirstCall) {
     try {
+      if (isFirstCall) {
+        setTotalSorters(totalSorters => totalSorters + 1);
+      }
       const next = iterator.next();
       const newData = {
         array: [...next.value.array],
@@ -111,6 +114,7 @@ export default function Dashboard() {
         if (!next.done) {
           callNext(iterator, setter);
         } else {
+          setTotalDone(totalDone => totalDone + 1);
           setter({ array: newData.array, count: newData.count });
         }
       }, timeout);
@@ -122,22 +126,36 @@ export default function Dashboard() {
   return (
     <div className={DashboardClass}>
       <div className={buttonsWrapper}>
-        <button className={sortButton} onClick={doSort}>
+        <button
+          className={sortButton}
+          onClick={doSort}
+          disabled={totalDone < totalSorters}
+        >
           Sort
         </button>
-        <button className={sortButton} onClick={reset}>
+        <button
+          className={sortButton}
+          onClick={reset}
+          disabled={totalDone < totalSorters}
+        >
           Reset
         </button>
-        <button className={sortButton} onClick={generate}>
+        <button
+          className={sortButton}
+          onClick={generate}
+          disabled={totalDone < totalSorters}
+        >
           Random
         </button>
         <div className={barCountInputWrapper}>
+          <label>No. of Bars: </label>
           <input
             type="number"
             value={maxNumbers}
             onChange={event => {
               setMaxNumbers(event.target.value);
             }}
+            disabled={totalDone < totalSorters}
           />
         </div>
       </div>
@@ -148,11 +166,6 @@ export default function Dashboard() {
           data={quickSortData}
         />
         <SortView
-          title="Bubbble Sort"
-          viewHeight={viewHeight}
-          data={bubbleSortData}
-        />
-        <SortView
           title="Insertion Sort"
           viewHeight={viewHeight}
           data={insertionSortData}
@@ -161,6 +174,11 @@ export default function Dashboard() {
           title="Selection Sort"
           viewHeight={viewHeight}
           data={selectionSortData}
+        />
+        <SortView
+          title="Bubbble Sort"
+          viewHeight={viewHeight}
+          data={bubbleSortData}
         />
       </div>
     </div>
