@@ -12,6 +12,7 @@ import {
 import { bubbleSortIterator } from "../services/sorters/bubbleSort";
 import { insertionSortIterator } from "../services/sorters/insertionSort";
 import { selectionSortIterator } from "../services/sorters/selectionSort";
+import { quickSortIterator } from "../services/sorters/quickSort";
 
 export default function Dashboard() {
   const viewHeight = 200;
@@ -23,6 +24,7 @@ export default function Dashboard() {
   const [bubbleSortData, setBubbleSortData] = useState({ array: [] });
   const [insertionSortData, setInsertionSortData] = useState({ array: [] });
   const [selectionSortData, setSelectionSortData] = useState({ array: [] });
+  const [quickSortData, setQuickSortData] = useState({ array: [] });
   const generateRandom = max => {
     // const maxNumbers = random(10, 30);
     const array = times(max, i => ({
@@ -34,6 +36,8 @@ export default function Dashboard() {
 
   const generate = useCallback(() => {
     const array = generateRandom(maxNumbers);
+    console.log("orig array:", array.map(d => d.value));
+
     setInitialData(array);
     setData(array);
   }, [maxNumbers]);
@@ -46,12 +50,14 @@ export default function Dashboard() {
     setBubbleSortData({ array });
     setInsertionSortData({ array });
     setSelectionSortData({ array });
+    setQuickSortData({ array });
   }
 
   function doSort() {
     doBubbleSort();
     doInsertionSort();
     doSelectionSort();
+    doQuickSort();
   }
 
   function reset() {
@@ -81,6 +87,15 @@ export default function Dashboard() {
     }
   }
 
+  function doQuickSort() {
+    try {
+      const iterator = quickSortIterator(quickSortData.array);
+      callNext(iterator, setQuickSortData);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   function callNext(iterator, setter) {
     try {
       const next = iterator.next();
@@ -88,6 +103,7 @@ export default function Dashboard() {
         array: [...next.value.array],
         index1: next.value.index1,
         index2: next.value.index2,
+        index3: next.value.index3,
         count: next.value.count
       };
       setter(newData);
@@ -126,6 +142,11 @@ export default function Dashboard() {
         </div>
       </div>
       <div className={grid}>
+        <SortView
+          title="Quicksort"
+          viewHeight={viewHeight}
+          data={quickSortData}
+        />
         <SortView
           title="Bubbble Sort"
           viewHeight={viewHeight}

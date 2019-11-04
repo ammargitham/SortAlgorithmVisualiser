@@ -1,5 +1,7 @@
 $barColor: #0041cc;
 $activeBarColor: #8803b1;
+$pivotColor: #e4e400;
 
 @value barColor #{$barColor};
 @value activeBarColor #{$activeBarColor};
+@value pivotColor #{$pivotColor};

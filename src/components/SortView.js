@@ -27,6 +27,7 @@ export default function SortView({ viewHeight, data, title }) {
                     active={i === data.index1 || i === data.index2}
                     viewHeight={viewHeight}
                     height={d.value}
+                    pivot={i === data.index3}
                   />
                 </li>
               </Flipped>
